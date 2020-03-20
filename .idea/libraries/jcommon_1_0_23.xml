@@ -1,0 +1,17 @@
+<component name="libraryTable">
+  <library name="jcommon-1.0.23">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/out/jcommon-1.0.23.jar!/" />
+      <root url="jar://$PROJECT_DIR$/out/jfreechart-1.0.19-swt.jar!/" />
+      <root url="jar://$PROJECT_DIR$/out/jfreechart-1.0.19.jar!/" />
+      <root url="jar://$PROJECT_DIR$/out/swtgraphics2d.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/out/jfreechart-1.0.19.zip!/jfreechart-1.0.19/experimental" />
+      <root url="jar://$PROJECT_DIR$/out/jfreechart-1.0.19.zip!/jfreechart-1.0.19/source" />
+      <root url="jar://$PROJECT_DIR$/out/jfreechart-1.0.19.zip!/jfreechart-1.0.19/swt" />
+      <root url="jar://$PROJECT_DIR$/out/jfreechart-1.0.19.zip!/jfreechart-1.0.19/tests" />
+    </SOURCES>
+  </library>
+</component>
