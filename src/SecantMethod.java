@@ -27,7 +27,7 @@ public class SecantMethod {
         }
 
         double k;
-        double x = x0+accuracy*2; //чтобы не было проблем, если в качестве приближения выбираем один из концов отрезка
+        double x = x0+accuracy*2;
         double f;
         while (Math.abs(x-x0)>accuracy) {
             k=x;

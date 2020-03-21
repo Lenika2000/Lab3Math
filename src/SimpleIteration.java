@@ -6,10 +6,11 @@ public class SimpleIteration {
 
     private double appr;
     private double accuracy;
-
+    private double λ;
     SimpleIteration(double[] parameters) {
         this.appr = parameters[0]; //начальное приближение
         this.accuracy = parameters[1];
+
     }
 
     public String findSolution() throws MethodException {
@@ -17,7 +18,12 @@ public class SimpleIteration {
         double φ1 = (6.25 * appr + 3.5) / 3 / Math.cbrt(Math.pow(3.125 * appr * appr + 3.5 * appr - 2.458, 2));
         double φ2 = (3 * appr * appr - 6.25 * appr) / 3.5;
         double φ3 = (3 * appr * appr - 3.5) / Math.sqrt(appr * appr * appr - 3.5 * appr + 2.458) / 2 / 3.125; // делала в аэропорту , проверь!!!
+        double fappr = 3*Math.pow(appr,2)-6.25*appr-3.5;
+        λ=-1/fappr;
 
+        if (Math.abs(3*λ*Math.pow(appr,2)-6.25*λ*appr+1-3.5*λ)<1 && (appr>0 ||appr<-1)) {
+            return getAnswer(((Double x) -> x+λ*(Math.pow(x, 3) - 3.125 * Math.pow(x, 2) - 3.5 * x + 2.458) ));
+        } else
         if (Math.abs(φ1) < 1) {
             return getAnswer((Double x) -> Math.cbrt(3.125 * x * x + 3.5 * x - 2.458));
         } else if (Math.abs(φ2) < 1) {
@@ -35,16 +41,16 @@ public class SimpleIteration {
         double x0 = appr;
         double x1;
         int n = 0;
+        double f;
         while (true) {
             x1 = fun.apply(x0);
             n++;
-            if (Math.abs(x1 - x0) <= accuracy) {
+            f = (Math.pow(x1, 3) - 3.125 * Math.pow(x1, 2) - 3.5 * x1 + 2.458);
+            if (Math.abs(f) <= accuracy) {
                 break;
             }
             x0 = x1;
         }
-        double f = (Math.pow(x1, 3) - 3.125 * Math.pow(x1, 2) - 3.5 * x1 + 2.458);
-
         final LineChart demo = new LineChart("Метод простых итераций", appr, x1);
         demo.pack();
         RefineryUtilities.centerFrameOnScreen(demo);
@@ -54,6 +60,12 @@ public class SimpleIteration {
                 "Х=%f, количество итераций n=%d, f(%f)=%f", x1, n, x1, f);
 
     }
+
+//    private String lymbda(Function<Double, Double> fun){
+//        double fappr = 3*Math.pow(appr,2)-6.25*appr-3.5;
+//        double λ=-1/fappr;
+//
+//    }
 
 }
 
