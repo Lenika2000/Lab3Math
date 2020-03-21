@@ -1,6 +1,7 @@
 import org.jfree.ui.RefineryUtilities;
 
 import java.util.function.Function;
+import static java.lang.Math.*;
 
 public class SimpleIteration {
 
@@ -23,22 +24,19 @@ public class SimpleIteration {
 
         λ = -1 / fappr;
 
-//        if (Math.abs(φ1) < 1 || Math.abs(φ2) < 1 || Math.abs(φ3) < 1) {
-//            return getAnswer(((Double x) -> x + λ * (Math.pow(x, 3) - 3.125 * Math.pow(x, 2) - 3.5 * x + 2.458)));
+        double φλ = ( appr + λ * (Math.pow(appr, 3) - 3.125 * Math.pow(appr, 2) - 3.5 * appr + 2.458));
 
-        double min = Math.min(Math.min(Math.abs(φ1), Math.abs(φ2)), Math.abs(φ3));
+        φ1 = Double.isNaN(φ1) ? Double.MAX_VALUE : φ1;
+        φ2 = Double.isNaN(φ2) ? Double.MAX_VALUE : φ2;
+        φ3 = Double.isNaN(φ3) ? Double.MAX_VALUE : φ3;
+        φλ = Double.isNaN(φλ) ? Double.MAX_VALUE : φλ;
 
-        if (Math.abs(φ1) < 1 && min == Math.abs(φ1)) {
-            return getAnswer((Double x) -> Math.cbrt(3.125 * x * x + 3.5 * x - 2.458));
-        } else if (Math.abs(φ2) < 1 && min == Math.abs(φ2)) {
-            return getAnswer((Double x) -> (x * x * x - 3.125 * x * x + 2.458) / 3.5);
-        } else if (Math.abs(φ3) < 1 && min == Math.abs(φ3)) {
-            return getAnswer((Double x) -> Math.sqrt(x * x * x - 3.5 * x + 2.458) / 3.125); // перепроверь , выделяем х^2
-        } else {
+        double min = Math.min(Math.min(Math.abs(φ1), Math.abs(φ2)), Math.min(Math.abs(φλ),Math.abs(φ3)));
+
+        if (min < 1)
+            return getAnswer(((Double x) -> x + λ * (Math.pow(x, 3) - 3.125 * Math.pow(x, 2) - 3.5 * x + 2.458)));
+        else
             throw new MethodException("Начальное приближение выбрано неверно, не выполняется достаточное условие сходимости метода");
-        }
-
-
     }
 
     private String getAnswer(Function<Double, Double> fun) {
@@ -49,8 +47,7 @@ public class SimpleIteration {
         while (true) {
             x1 = fun.apply(x0);
             n++;
-            f = (Math.pow(x1, 3) - 3.125 * Math.pow(x1, 2) - 3.5 * x1 + 2.458);
-            if (Math.abs(f) <= accuracy) {
+            if (x1-x0 <= accuracy) {
                 break;
             }
             x0 = x1;
@@ -61,7 +58,7 @@ public class SimpleIteration {
         demo.setVisible(true);
 
         return String.format("Выполнено решение уравнения x^(3)-3.125x^(2)-3.5x+2.458 методом простой итерации\n " +
-                "Х=%f, количество итераций n=%d, f(%f)=%f", x1, n, x1, f);
+                "Х=%f, количество итераций n=%d, f(%f)=%f", x1, n, x1, x1);
 
     }
 
