@@ -7,6 +7,7 @@ public class SimpleIteration {
     private double appr;
     private double accuracy;
     private double λ;
+
     SimpleIteration(double[] parameters) {
         this.appr = parameters[0]; //начальное приближение
         this.accuracy = parameters[1];
@@ -15,20 +16,23 @@ public class SimpleIteration {
 
     public String findSolution() throws MethodException {
 
-        double φ1 = (6.25 * appr + 3.5) / 3 / Math.cbrt(Math.pow(3.125 * appr * appr + 3.5 * appr - 2.458, 2));
+        double φ1 = (6.25 * appr + 3.5) / (3 * Math.cbrt(Math.pow(3.125 * appr * appr + 3.5 * appr - 2.458, 2)));
         double φ2 = (3 * appr * appr - 6.25 * appr) / 3.5;
-        double φ3 = (3 * appr * appr - 3.5) / Math.sqrt(appr * appr * appr - 3.5 * appr + 2.458) / 2 / 3.125; // делала в аэропорту , проверь!!!
-        double fappr = 3*Math.pow(appr,2)-6.25*appr-3.5;
-        λ=-1/fappr;
+        double φ3 = (3 * appr * appr - 3.5) / (3.125 * 2 * Math.sqrt(appr * appr * appr - 3.5 * appr + 2.458)); // делала в аэропорту , проверь!!!
+        double fappr = 3 * Math.pow(appr, 2) - 6.25 * appr - 3.5;
 
-        if (Math.abs(3*λ*Math.pow(appr,2)-6.25*λ*appr+1-3.5*λ)<1 && (appr>0 ||appr<-1)) {
-            return getAnswer(((Double x) -> x+λ*(Math.pow(x, 3) - 3.125 * Math.pow(x, 2) - 3.5 * x + 2.458) ));
-        } else
-        if (Math.abs(φ1) < 1) {
+        λ = -1 / fappr;
+
+//        if (Math.abs(φ1) < 1 || Math.abs(φ2) < 1 || Math.abs(φ3) < 1) {
+//            return getAnswer(((Double x) -> x + λ * (Math.pow(x, 3) - 3.125 * Math.pow(x, 2) - 3.5 * x + 2.458)));
+
+        double min = Math.min(Math.min(Math.abs(φ1), Math.abs(φ2)), Math.abs(φ3));
+
+        if (Math.abs(φ1) < 1 && min == Math.abs(φ1)) {
             return getAnswer((Double x) -> Math.cbrt(3.125 * x * x + 3.5 * x - 2.458));
-        } else if (Math.abs(φ2) < 1) {
+        } else if (Math.abs(φ2) < 1 && min == Math.abs(φ2)) {
             return getAnswer((Double x) -> (x * x * x - 3.125 * x * x + 2.458) / 3.5);
-        } else if (Math.abs(φ3) < 1) {
+        } else if (Math.abs(φ3) < 1 && min == Math.abs(φ3)) {
             return getAnswer((Double x) -> Math.sqrt(x * x * x - 3.5 * x + 2.458) / 3.125); // перепроверь , выделяем х^2
         } else {
             throw new MethodException("Начальное приближение выбрано неверно, не выполняется достаточное условие сходимости метода");
