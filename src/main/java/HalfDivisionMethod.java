@@ -1,3 +1,5 @@
+package main.java;
+
 import org.jfree.ui.RefineryUtilities;
 
 public class HalfDivisionMethod {

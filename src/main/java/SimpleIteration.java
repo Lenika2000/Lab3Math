@@ -1,3 +1,5 @@
+package main.java;
+
 import org.jfree.ui.RefineryUtilities;
 
 import java.util.function.Function;
@@ -47,18 +49,20 @@ public class SimpleIteration {
         while (true) {
             x1 = fun.apply(x0);
             n++;
-            if (x1-x0 <= accuracy) {
+            f = (Math.pow(x1, 3) - 3.125 * Math.pow(x1, 2) - 3.5 * x1 + 2.458);
+            if (Math.abs(x1-x0) <= accuracy) {
                 break;
             }
             x0 = x1;
         }
+
         final LineChart demo = new LineChart("Метод простых итераций", appr, x1);
         demo.pack();
         RefineryUtilities.centerFrameOnScreen(demo);
         demo.setVisible(true);
 
         return String.format("Выполнено решение уравнения x^(3)-3.125x^(2)-3.5x+2.458 методом простой итерации\n " +
-                "Х=%f, количество итераций n=%d, f(%f)=%f", x1, n, x1, x1);
+                "Х=%f, количество итераций n=%d, f(%f)=%f", x1, n, x1, f);
 
     }
 

@@ -1,3 +1,5 @@
+package main.java;
+
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -7,11 +9,14 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYSplineRenderer;
 
+
 import org.jfree.data.xy.XYDataset;
 import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RectangleInsets;
 
 import java.awt.*;
+
+import static main.java.Dataset.*;
 
 
 public class LineChart extends ApplicationFrame {
@@ -75,8 +80,8 @@ public class LineChart extends ApplicationFrame {
         r.setSeriesPaint(0, Color.blue);
 
         // Набор данных
-        XYDataset dataset = Dataset.createDataset(a, b);
-        XYDataset X = Dataset.createDatasetX(a, b);
+        XYDataset dataset = createDataset(a, b);
+        XYDataset X = createDatasetX(a, b);
 
         XYSplineRenderer r1 = new XYSplineRenderer();//характеристики оси абсцисс
         r.setSeriesPaint(1, Color.black);
