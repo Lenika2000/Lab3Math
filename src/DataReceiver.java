@@ -23,12 +23,12 @@ public class DataReceiver {
                         break;
                     case "2":
                         success = true;
-                        answer(SecantMethod.findSolution(getData(true)));
+                        answer(SecantMethod.findSolution(getData(false)));
                         break;
                     case "3":
                         success = true;
-                        SimpleIteration simpleIteration = new SimpleIteration();
-                        answer(simpleIteration.findSolution(getData(true)));
+                        SimpleIteration simpleIteration = new SimpleIteration(getData(true));
+                        answer(simpleIteration.findSolution());
                         break;
                     case "exit":
                         success = true;
@@ -88,15 +88,15 @@ public class DataReceiver {
     }
 
 
-    double[] getData(boolean isInitialApproximation) throws IOException {
+    double[] getData(boolean isInitialApproximation) throws IOException, MethodException {
         boolean success = false;
         while (!success) {
             System.out.println("Для ввода данных из консоли нажмите 1\n"
                     + "Чтобы загрузить данные из файла нажмите 2");
             System.out.println("Содержимое файла:\n"
                     + "Параметры указывать через точку-запятую\n"
-                    + "Для методов половинного деленияи и простой итерации в виде: границы интервала(через точку-запятую;погрешность вычисления\n"
-                    + "Для метода секущих в виде:границы интервала(через точку-запятую);начальное приближение;погрешность вычисления");
+                    + "Для методов половинного деления и метод секущей в виде: границы интервала(через точку-запятую);погрешность вычисления\n"
+                    + "Для метода простой итерации в виде:начальное приближение;погрешность вычисления");
             switch (in.readLine()) {
                 case "1":
                     return readFromConsole(isInitialApproximation);
@@ -128,61 +128,72 @@ public class DataReceiver {
     }
 
 
-    double[] readFromConsole(boolean isInitialApproximation) throws IOException {
-        double[] parameters = new double[4];
-        parameters[0] = getParameterFromConsole("Введите правую границу интервала");
-        parameters[1] = getParameterFromConsole("Введите левую границу интервала");
-        if (parameters[0] < parameters[1]) {
-            double k = parameters[0];
-            parameters[0] = parameters[1];
-            parameters[1] = k;
-            System.out.println("Правая граница меньше левой. Данные скорректированы.");
-        }
+    double[] readFromConsole(boolean isInitialApproximation) {
+        double[] parameters = new double[3];
+
         if (isInitialApproximation) {
-            parameters[2] = getParameterFromConsole("Введите начальное приближение");
-            parameters[3] = getParameterFromConsole("Введите погрешность вычисления");
+            parameters[0] = getParameterFromConsole("Введите начальное приближение");
+            parameters[1] = getParameterFromConsole("Введите погрешность вычисления");
         } else {
+            parameters[0] = getParameterFromConsole("Введите правую границу интервала");
+            parameters[1] = getParameterFromConsole("Введите левую границу интервала");
+            if (parameters[0] < parameters[1]) {
+                double k = parameters[0];
+                parameters[0] = parameters[1];
+                parameters[1] = k;
+                System.out.println("Правая граница меньше левой. Данные скорректированы.");
+            }
             parameters[2] = getParameterFromConsole("Введите погрешность вычисления");
         }
         return parameters;
     }
 
-    double[] readFromFile(boolean isInitialApproximation) throws IOException {
-        try {
-            //делать проверку на количество параметров в файле
+    double[] readFromFile(boolean isInitialApproximation) throws IOException, MethodException {
 
-            System.out.println("Введите полный путь к файлу");
-            String path = in.readLine();
-            File file = new File(path);
-            FileReader fr = new FileReader(file);
-            BufferedReader reader = new BufferedReader(fr);
+        boolean success = false;
+        while (!success) {
+            try {
+                System.out.println("Введите полный путь к файлу");
+                String path = in.readLine();
+                File file = new File(path);
+                FileReader fr = new FileReader(file);
+                BufferedReader reader = new BufferedReader(fr);
 
-            String line = reader.readLine();
-            if (line != null) {
-                String[] param = line.split(";");
-//                if (param.length!=4 && !isInitialApproximation) {
-//                    throw new ArrayIndexOutOfBoundsException();
-//                }
-                double[] doubleParam = new double[param.length];
+                String line = reader.readLine();
+                if (line != null) {
+                    String[] param = line.replace(",", ".").split(";");
+                    if (param.length != 2 && isInitialApproximation) {
+                        throw new MethodException("Количество парметров в файле не совпадает с требуемым количеством для выбранного метода");
+                    }
 
-                for (int i = 0; i < param.length; i++) {
-                    doubleParam[i] = Double.parseDouble(param[i]);
+                    if (param.length != 3 && !isInitialApproximation) {
+                        throw new MethodException("Количество парметров в файле не совпадает с требуемым количеством для выбранного метода");
+                    }
+                    double[] doubleParam = new double[param.length];
+
+                    for (int i = 0; i < param.length; i++) {
+                        doubleParam[i] = Double.parseDouble(param[i]);
+                    }
+                    if (doubleParam[0] < doubleParam[1]) {
+                        double k = doubleParam[0];
+                        doubleParam[0] = doubleParam[1];
+                        doubleParam[1] = k;
+                    }
+
+                    return doubleParam;
+                } else {
+                    System.out.println("Файл пуст!");
+                    success = false;
                 }
-                if (doubleParam[0] < doubleParam[1]) {
-                    double k = doubleParam[0];
-                    doubleParam[0] = doubleParam[1];
-                    doubleParam[1] = k;
-                    System.out.println("Правая граница меньше левой. Данные скорректированы.");
-                }
-                return doubleParam;
-            } else {
-                System.out.println("Файл пуст!");
+
+            } catch (FileNotFoundException e) {
+                System.out.println("Файл не найден!");
+                success = false;
+            } catch (ArrayIndexOutOfBoundsException e) {
+                System.out.println("Данные некорректны.Проверьте содержимое файла!");
+                success = false;
             }
 
-        } catch (FileNotFoundException e) {
-            System.out.println("Файл не найден!");
-        } catch (ArrayIndexOutOfBoundsException e) {
-            System.out.println("Данные некорректны.Проверьте содержимое файла!");
         }
         return new double[2];
     }

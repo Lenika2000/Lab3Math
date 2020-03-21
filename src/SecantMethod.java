@@ -7,9 +7,8 @@ public class SecantMethod {
     static String findSolution(double[] parameters) throws MethodException {
         double x0;
         double b = parameters[0];
-        double a = parameters[1]; //нужны ли они тут?
-        double approximation = parameters[2];
-        double accuracy = parameters[3];
+        double a = parameters[1];
+        double accuracy = parameters[2];
         int n=0;
 
         boolean condition = (x1 > b || x1 < a) && (x2 > b || x2 < a) && (x3 > b || x3 < a);
@@ -21,10 +20,10 @@ public class SecantMethod {
             throw new MethodException(String.format("На концах отрезка [%f,%f] функция имеет одинаковые знаки",a,b));
         }
 
-        if ((Math.pow(approximation,3)-3.125*Math.pow(approximation,2)-3.5*approximation+2.458)*(6*approximation-6.25)>0) {
-            x0=approximation;
+        if ((Math.pow(a,3)-3.125*Math.pow(a,2)-3.5*a+2.458)*(6*a-6.25)>0) {
+            x0=a;
         }else {
-                throw new MethodException("Выбрано неверное начальное приближение");
+            x0=b;
         }
 
         double k;

@@ -3,40 +3,49 @@ import org.jfree.ui.RefineryUtilities;
 import java.util.function.Function;
 
 public class SimpleIteration {
-    public String findSolution(double[] parameters) throws MethodException {
 
-        double b = parameters[0]; // не использую
-        double a = parameters[1];
-        double approximation = parameters[2];
-        double accuracy = parameters[3];
-        double x0=approximation;
-        double φ1=(6.25*x0+3.5)/3/Math.cbrt(Math.pow(3.125*x0*x0+3.5*x0-2.458,2));
-        double φ2=(3*x0*x0-6.25*x0)/3.5;
+    private double appr;
+    private double accuracy;
 
-        if (Math.abs(φ1)<1){
-            return getAnswer(x0,accuracy,approximation,(Double x) ->  Math.cbrt(3.125*x*x+3.5*x-2.458));
-        } else if (Math.abs(φ2)<1){
-            return getAnswer(x0,accuracy,approximation,(Double x) ->  (x*x*x-3.125*x*x+2.458)/3.5);
+    SimpleIteration(double[] parameters) {
+        this.appr = parameters[0]; //начальное приближение
+        this.accuracy = parameters[1];
+    }
+
+    public String findSolution() throws MethodException {
+
+        double φ1 = (6.25 * appr + 3.5) / 3 / Math.cbrt(Math.pow(3.125 * appr * appr + 3.5 * appr - 2.458, 2));
+        double φ2 = (3 * appr * appr - 6.25 * appr) / 3.5;
+        double φ3 = (3 * appr * appr - 3.5) / Math.sqrt(appr * appr * appr - 3.5 * appr + 2.458) / 2 / 3.125; // делала в аэропорту , проверь!!!
+
+        if (Math.abs(φ1) < 1) {
+            return getAnswer((Double x) -> Math.cbrt(3.125 * x * x + 3.5 * x - 2.458));
+        } else if (Math.abs(φ2) < 1) {
+            return getAnswer((Double x) -> (x * x * x - 3.125 * x * x + 2.458) / 3.5);
+        } else if (Math.abs(φ3) < 1) {
+            return getAnswer((Double x) -> Math.sqrt(x * x * x - 3.5 * x + 2.458) / 3.125); // перепроверь , выделяем х^2
         } else {
             throw new MethodException("Начальное приближение выбрано неверно, не выполняется достаточное условие сходимости метода");
         }
 
+
     }
 
-    private String getAnswer(double x0, double accuracy, double appr, Function<Double, Double> fun){
+    private String getAnswer(Function<Double, Double> fun) {
+        double x0 = appr;
         double x1;
-        int n=0;
-        while (true){
+        int n = 0;
+        while (true) {
             x1 = fun.apply(x0);
             n++;
-            if (Math.abs(x1-x0)<=accuracy) {
+            if (Math.abs(x1 - x0) <= accuracy) {
                 break;
             }
-            x0 =x1;
+            x0 = x1;
         }
         double f = (Math.pow(x1, 3) - 3.125 * Math.pow(x1, 2) - 3.5 * x1 + 2.458);
 
-        final LineChart demo = new LineChart("Метод секущих", appr, x1);
+        final LineChart demo = new LineChart("Метод простых итераций", appr, x1);
         demo.pack();
         RefineryUtilities.centerFrameOnScreen(demo);
         demo.setVisible(true);

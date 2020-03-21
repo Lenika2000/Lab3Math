@@ -11,8 +11,8 @@ public class Dataset {
             b = a;
             a = k;
         }
-        a-=1;
-        b+=1;
+        a -= 1;
+        b += 1;
         for (double i = a; i < b; i += Math.abs(b - a) / 100) {
             series1.add(i, Math.pow(i, 3) - 3.125 * Math.pow(i, 2) - 3.5 * i + 2.458);
         }
@@ -31,8 +31,8 @@ public class Dataset {
             a = k;
         }
 
-        series1.add(a-1, 0);
-        series1.add(b+1, 0);
+        series1.add(a - 1, 0);
+        series1.add(b + 1, 0);
 
         XYSeriesCollection dataset = new XYSeriesCollection();
         dataset.addSeries(series1);

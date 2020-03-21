@@ -30,7 +30,7 @@ public class HalfDivisionMethod {
         x = (b + a) / 2;
         f = (Math.pow(x, 3) - 3.125 * Math.pow(x, 2) - 3.5 * x + 2.458);
 
-        final LineChart demo = new LineChart("Метод секущих", a, b);
+        final LineChart demo = new LineChart("Метод половинного деления", a, b);
         demo.pack();
         RefineryUtilities.centerFrameOnScreen(demo);
         demo.setVisible(true);
