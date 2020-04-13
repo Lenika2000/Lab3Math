@@ -14,6 +14,7 @@ public class HalfDivisionMethod {
         double accuracy = parameters[2];
         double x;
         double f;
+
         boolean condition = (x1 > b || x1 < a) && (x2 > b || x2 < a) && (x3 > b || x3 < a);
         if (condition) {
             throw new MethodException(String.format("На введенном интервале (%f,%f) отсутствует корень уравнения.", a, b));
@@ -39,7 +40,5 @@ public class HalfDivisionMethod {
 
         return String.format("Выполнено решение уравнения x^(3)-3.125x^(2)-3.5x+2.458 методом половинного деления\n " +
                 "Х=%f, количество итераций n=%d, f(%f)=%f", x, n, x, f);
-
-
     }
 }

@@ -19,17 +19,17 @@ public class SecantMethod {
         }
 
         if ((Math.pow(a,3)-3.125*Math.pow(a,2)-3.5*a+2.458)*(Math.pow(b,3)-3.125*Math.pow(b,2)-3.5*b+2.458)>0){
-            throw new MethodException(String.format("На концах отрезка [%f,%f] функция имеет одинаковые знаки",a,b));
+            throw new MethodException(String.format("На концах отрезка [%f,%f] функция имеет одинаковые знаки. Значит на отрезке либо нет корней, либо их четное количество",a,b));
         }
 
-        if ((Math.pow(a,3)-3.125*Math.pow(a,2)-3.5*a+2.458)*(6*a-6.25)>0) {
+        if ((Math.pow(a,3)-3.125*Math.pow(a,2)-3.5*a+2.458)*(6*a-6.25)>0) { //выбор х0
             x0=a;
         }else {
             x0=b;
         }
 
         double k;
-        double x = x0+accuracy*2;
+        double x = x0+accuracy*2; //x выбирается рядом с х0 самостоятельно
         double f;
         while (Math.abs(x-x0)>accuracy) {
             k=x;

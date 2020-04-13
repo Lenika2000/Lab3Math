@@ -5,7 +5,7 @@ import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
 public class Dataset {
-    public static XYDataset createDataset(double a, double b) {
+    public static XYDataset createDataset(double a, double b) { //график функции
         final XYSeries series1 = new XYSeries("x^(3)-3.125x^(2)-3.5x+2.458");
 
         if (a > b) {
@@ -25,7 +25,7 @@ public class Dataset {
         return dataset;
     }
 
-    public static XYDataset createDatasetX(double a, double b) {
+    public static XYDataset createDatasetX(double a, double b) { //ось абсцисс
         final XYSeries series1 = new XYSeries("y=0");
         if (a > b) {
             double k = b;

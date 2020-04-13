@@ -23,7 +23,8 @@ public class SimpleIteration {
         λ=-1/fappr;
 
         if (Math.abs(3*λ*Math.pow(appr,2)-6.25*λ*appr+1-3.5*λ)<1 && (appr>0 ||appr<-1)) {
-            return getAnswer(((Double x) -> x+λ*(Math.pow(x, 3) - 3.125 * Math.pow(x, 2) - 3.5 * x + 2.458) ));
+            return getAnswer(((Double x) -> x+λ*(Math.pow(x, 3) - 3.125 * Math.pow(x, 2) - 3.5 * x + 2.458) ));//достаточное условие
+            //сходимости выполнено и начальное приближение не лежит в интервале от -1 до 0
         } else {
             double φ1 = (6.25 * appr + 3.5) / 3 / Math.cbrt(Math.pow(3.125 * appr * appr + 3.5 * appr - 2.458, 2));
             if (Math.abs(φ1) < 1) {
@@ -44,7 +45,7 @@ public class SimpleIteration {
             x1 = fun.apply(x0);
             n++;
             f = (Math.pow(x1, 3) - 3.125 * Math.pow(x1, 2) - 3.5 * x1 + 2.458);
-            if (Math.abs(f) <= accuracy) {
+            if (Math.abs(f) <= accuracy) { //для более точного ответа
                 break;
             }
             x0 = x1;
