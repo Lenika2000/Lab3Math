@@ -17,12 +17,12 @@ public class SimpleIteration {
     }
 
     public String findSolution() throws MethodException {
-
-
+        //подставим в производную функцию значение начального приближения
         double fappr = 3*Math.pow(appr,2)-6.25*appr-3.5;
         λ=-1/fappr;
 
-        if (Math.abs(3*λ*Math.pow(appr,2)-6.25*λ*appr+1-3.5*λ)<1 && (appr>0 ||appr<-1)) {
+        //сходится ли метод простой итерации
+        if (Math.abs(3*λ*Math.pow(appr,2)-6.25*λ*appr+1-3.5*λ)<1 && (appr>0 ||appr<-1) ) {
             return getAnswer(((Double x) -> x+λ*(Math.pow(x, 3) - 3.125 * Math.pow(x, 2) - 3.5 * x + 2.458) ));//достаточное условие
             //сходимости выполнено и начальное приближение не лежит в интервале от -1 до 0
         } else {
